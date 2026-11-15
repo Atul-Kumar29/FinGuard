@@ -3,10 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import select, func, desc
 from sqlalchemy.orm import Session
 from app.config import settings
-from app.database import get_db
+from app.database import Base, engine, get_db
 from app.models import Account, Transaction, DetectionResult, Alert, InvestigationCase, CaseEvent, AppUser
 from app.schemas import TransactionCreate, TransactionOut, AlertOut, CaseCreate, CaseUpdate, EventCreate
 from app.detection import run_detection, ensure_default_rules
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Financial Transaction Anomaly Detection API", version="1.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=settings.origins, allow_credentials=True,
