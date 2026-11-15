@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from sqlalchemy import select
-from app.database import SessionLocal
+from app.database import Base, SessionLocal, engine
 from app.models import Account, AppUser, Transaction
 from app.detection import ensure_default_rules
 
 def main():
+    Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
         ensure_default_rules(db)
